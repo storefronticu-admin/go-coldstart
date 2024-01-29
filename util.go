@@ -23,5 +23,5 @@ func rateLimit(c *gin.Context) {
 }
 
 func index(c *gin.Context) {
-	c.Redirect(http.StatusMovedPermanently, "https://storefronticu-admin.github.io/go-gin-ledger/storefront.icu/go-gin-ledger-server/")
+	c.Redirect(http.StatusMovedPermanently, "https://storefronticu-admin.github.io/go-coldstart/storefront.icu/go-gin-ledger-server/")
 }
