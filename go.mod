@@ -1,4 +1,4 @@
-module github.com/render-examples/go-gin-web-server
+module storefront.icu/go-gin-ledger-server
 
 go 1.14
 

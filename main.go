@@ -23,8 +23,19 @@ import (
 
 var (
 	ctx    context.Context
-	client *firestore.Client
+	firestore_client *firestore.Client
 )
+
+	//USAGE: main.SetContextAndClient(someContext, someFirestoreClient)
+func SetContextAndClient(c context.Context, fClient *firestore.Client) {
+	ctx = c
+	firestore_client = fClient
+}
+
+	//USAGE: ctx, client := main.GetContextAndClient()
+func GetContextAndClient() (context.Context, *firestore.Client) {
+	return ctx, firestore_client
+}
 
 func main() {
 	ConfigRuntime()
@@ -48,10 +59,11 @@ func ConfigRuntime() {
 	}
 	successLog.Println("Firebase app initialized")
 
-	client, err = app.Firestore(ctx)
+	firestore_client, err = app.Firestore(ctx)
 	if err != nil {
 		errorLog.Fatalf("Error initializing Firestore client: %v", err)
 	}
+
 	successLog.Println("Firestore client initialized")
 }
 
@@ -76,11 +88,10 @@ func StartGin() {
 	// Add the repoinfo API group
 	repoinfoGroup := router.Group("/repoinfo")
 	{
-		repoinfoGroup.POST("/", repoinfoPost)
-		repoinfoGroup.PUT("/", repoinfoPut)
-		repoinfoGroup.GET("/", repoinfoGet)
+		repoinfoGroup.GET("/", RepoinfoGet)
+		repoinfoGroup.POST("/", RepoinfoPost)
 		// 
-		repoinfoGroup.GET("/count", repoinfoCountGet)
+		repoinfoGroup.GET("/count", RepoinfoCountGet)
 	}
 
 	// Log that the server is starting

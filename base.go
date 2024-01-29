@@ -9,7 +9,7 @@ import (
 
 //  Base path
 
-func repoinfoGet(c *gin.Context) {
+func RepoinfoGet(c *gin.Context) {
 	id := c.Query("id")
 	if id == "" {
 		errorLog.Printf("Failed getting specific repo info")
@@ -17,7 +17,7 @@ func repoinfoGet(c *gin.Context) {
 		return
 	}
 
-	dsnap, err := client.Collection("users").Doc(id).Get(ctx)
+	dsnap, err := firestore_client.Collection("users").Doc(id).Get(ctx)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve document"})
 		return
@@ -31,11 +31,10 @@ func repoinfoGet(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "GET request handled, but no data available"})
-	debugLog.Println("repoinfoGet is not implemented yet")
 }
 
-func repoinfoPost(c *gin.Context) {
-	_, _, err := client.Collection("users").Add(ctx, map[string]interface{}{
+func RepoinfoPost(c *gin.Context) {
+	_, _, err := firestore_client.Collection("users").Add(ctx, map[string]interface{}{
 		"first": "Ada",
 		"last":  "Lovelace",
 		"born":  1815,
@@ -48,10 +47,5 @@ func repoinfoPost(c *gin.Context) {
 
 	successLog.Println("Success writing to Firestore")
 	c.JSON(http.StatusOK, gin.H{"message": "POST request handled"})
-	debugLog.Println("repoinfoPost is not implemented yet")
 }
 
-func repoinfoPut(c *gin.Context) {
-	// TODO: Implement the PUT method logic here.
-	debugLog.Println("repoinfoPut is not implemented yet")
-}

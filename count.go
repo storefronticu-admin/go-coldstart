@@ -11,8 +11,8 @@ import (
 
 // Count path
 
-func repoinfoCountGet(c *gin.Context) {
-		collection := client.Collection("users")
+func RepoinfoCountGet(c *gin.Context) {
+		collection := firestore_client.Collection("users")
 
 		aggregationQuery := collection.NewAggregationQuery().WithCount("all")
 		results, err := aggregationQuery.Get(ctx)
@@ -35,6 +35,5 @@ func repoinfoCountGet(c *gin.Context) {
 
 		// Convert the int64 to a string before writing it to the response
 		c.JSON(http.StatusOK, gin.H{"count": strconv.FormatInt(countValue.GetIntegerValue(), 10)})
-		debugLog.Println("repoinfoHead is not implemented yet")
 		return
 }
