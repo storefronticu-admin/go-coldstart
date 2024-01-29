@@ -1,4 +1,4 @@
-module storefront.icu/go-gin-ledger-server
+module storefront.icu/go-coldstart
 
 go 1.14
 

@@ -7,7 +7,7 @@ import (
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/option"
-	"storefront.icu/go-gin-ledger-server/logger"
+	"storefront.icu/go-coldstart/logger"
 )
 
 var (

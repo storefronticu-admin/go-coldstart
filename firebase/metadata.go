@@ -3,7 +3,7 @@ package firebase
 import (
 	"fmt"
 
-	"storefront.icu/go-gin-ledger-server/logger"
+	"storefront.icu/go-coldstart/logger"
 )
 
 // UpdateDocument updates a document in Firestore

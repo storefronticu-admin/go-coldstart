@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime"
 
-	"storefront.icu/go-gin-ledger-server/logger"
+	"storefront.icu/go-coldstart/logger"
 
 	"github.com/gin-gonic/gin"
 )
