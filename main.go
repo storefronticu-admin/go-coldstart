@@ -10,9 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// main is the entry point of the application.
 func main() {
 	ConfigRuntime()
-	StartWorkers()
 	StartGin()
 }
 
@@ -23,10 +23,7 @@ func ConfigRuntime() {
 	fmt.Printf("Running with %d CPUs\n", nuCPU)
 }
 
-// StartWorkers start statsWorker by goroutine.
-func StartWorkers() {
-	go statsWorker()
-}
+// StartWorkers starts statsWorker by goroutine.
 
 // StartGin starts gin web server with setting router.
 func StartGin() {
@@ -44,10 +41,9 @@ func StartGin() {
 	// Add the repoinfo API group
 	repoinfoGroup := router.Group("/repoinfo")
 	{
-		repoinfoGroup.GET("/", RepoinfoGet)
-		repoinfoGroup.POST("/", RepoinfoPost)
-		// 
-		repoinfoGroup.GET("/count", RepoinfoCountGet)
+		repoinfoGroup.GET("/", RepoinfoGet) // Get repository information
+		repoinfoGroup.POST("/", RepoinfoPost) // Post repository information
+		repoinfoGroup.GET("/count", RepoinfoCountGet) // Get count of all repositories
 	}
 
 	// Log that the server is starting
