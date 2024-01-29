@@ -3,7 +3,6 @@ name: Publish API Reference
 on:
   # Publish documentation when a new release is tagged.
   push:
-    tags: ["v*"]
 
   # Allow manually publishing documentation from a specific hash.
   workflow_dispatch:
