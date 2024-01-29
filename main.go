@@ -78,13 +78,12 @@ func StartGin() {
 		port = "8080"
 	}
 
-	// Add the myinfo API group
-	myinfoGroup := router.Group("/myinfo")
+	// Add the repoinfo API group
+	repoinfoGroup := router.Group("/repoinfo")
 	{
-		myinfoGroup.POST("/", myinfoPost)
-		myinfoGroup.PUT("/", myinfoPut)
-		myinfoGroup.GET("/", myinfoGet)
-		myinfoGroup.HEAD("/", myinfoHead)
+		repoinfoGroup.POST("/", repoinfoPost)
+		repoinfoGroup.PUT("/", repoinfoPut)
+		repoinfoGroup.GET("/", repoinfoGet)
 	}
 
 	// Log that the server is starting
@@ -106,8 +105,8 @@ func StartGin() {
 }
 
 
-// myinfoPost is a placeholder for the actual implementation of the POST method for myinfo.
-func myinfoPost(c *gin.Context) {
+// repoinfoPost is a placeholder for the actual implementation of the POST method for repoinfo.
+func repoinfoPost(c *gin.Context) {
 	_, _, err := client.Collection("users").Add(ctx, map[string]interface{}{
 		"first": "Ada",
 		"last":  "Lovelace",
@@ -121,20 +120,43 @@ func myinfoPost(c *gin.Context) {
 
 	successLog.Println("Success writing to Firestore")
 	c.JSON(http.StatusOK, gin.H{"message": "POST request handled"})
-	debugLog.Println("myinfoPost is not implemented yet")
+	debugLog.Println("repoinfoPost is not implemented yet")
 }
 
-// myinfoPut is a placeholder for the actual implementation of the PUT method for myinfo.
-func myinfoPut(c *gin.Context) {
+// repoinfoPut is a placeholder for the actual implementation of the PUT method for repoinfo.
+func repoinfoPut(c *gin.Context) {
 	// TODO: Implement the PUT method logic here.
-	debugLog.Println("myinfoPut is not implemented yet")
+	debugLog.Println("repoinfoPut is not implemented yet")
 }
 
-// myinfoGet is a placeholder for the actual implementation of the GET method for myinfo.
-func myinfoGet(c *gin.Context) {
+// repoinfoGet is a placeholder for the actual implementation of the GET method for repoinfo.
+func repoinfoGet(c *gin.Context) {
 	id := c.Query("id")
 	if id == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing 'id' parameter in the URL"})
+		collection := client.Collection("users")
+
+		aggregationQuery := collection.NewAggregationQuery().WithCount("all")
+		results, err := aggregationQuery.Get(ctx)
+		if err != nil {
+			errorLog.Printf("Error querying: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error: %v", err)})
+			return
+		}
+
+		count, ok := results["all"]
+		if !ok {
+			errorLog.Println("Firestore: couldn't get alias for COUNT from results")
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving count"})
+			return
+		}
+
+		countValue := count.(*firestorepb.Value)
+		resultString := fmt.Sprintf("Number of results from query: %d\n", countValue.GetIntegerValue())
+		successLog.Println(resultString)
+
+		// Convert the int64 to a string before writing it to the response
+		c.JSON(http.StatusOK, gin.H{"count": strconv.FormatInt(countValue.GetIntegerValue(), 10)})
+		debugLog.Println("repoinfoHead is not implemented yet")
 		return
 	}
 
@@ -152,34 +174,6 @@ func myinfoGet(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "GET request handled, but no data available"})
-	debugLog.Println("myinfoGet is not implemented yet")
-}
-
-// myinfoHead is a placeholder for the actual implementation of the HEAD method for myinfo.
-func myinfoHead(c *gin.Context) {
-	collection := client.Collection("users")
-
-	aggregationQuery := collection.NewAggregationQuery().WithCount("all")
-	results, err := aggregationQuery.Get(ctx)
-	if err != nil {
-		errorLog.Printf("Error querying: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error: %v", err)})
-		return
-	}
-
-	count, ok := results["all"]
-	if !ok {
-		errorLog.Println("Firestore: couldn't get alias for COUNT from results")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving count"})
-		return
-	}
-
-	countValue := count.(*firestorepb.Value)
-	resultString := fmt.Sprintf("Number of results from query: %d\n", countValue.GetIntegerValue())
-	successLog.Println(resultString)
-
-	// Convert the int64 to a string before writing it to the response
-	c.JSON(http.StatusOK, gin.H{"count": strconv.FormatInt(countValue.GetIntegerValue(), 10)})
-	debugLog.Println("myinfoHead is not implemented yet")
+	debugLog.Println("repoinfoGet is not implemented yet")
 }
 
