@@ -12,10 +12,6 @@ RUN go mod download
 
 # Copy the source code to the container
 COPY . .
-
-# Print the current directory and list files to help diagnose
-RUN pwd && ls -la
-
 RUN echo "APP_STAGE= STAGING" > app.env
 # Build the binary
 RUN CGO_ENABLED=0 go build -o main .
@@ -24,8 +20,7 @@ RUN CGO_ENABLED=0 go build -o main .
 FROM alpine:latest
 
 # Set the working directory
-WORKDIR /app
-
+WORKDIR /
 # Copy the binary from the build stage
 COPY --from=build /app/main .
 
