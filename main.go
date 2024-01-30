@@ -5,9 +5,8 @@ import (
 	"os"
 	"runtime"
 
-	"storefront.icu/go-coldstart/logger"
-
 	"github.com/gin-gonic/gin"
+	"storefront.icu/go-coldstart/logger"
 )
 
 // main is the entry point of the application.
@@ -39,11 +38,9 @@ func StartGin() {
 	}
 
 	// Add the repoinfo API group
-	repoinfoGroup := router.Group("/repoinfo")
+	repoinfoGroup := router.Group("/repository-ledger")
 	{
-		repoinfoGroup.GET("/", RepoinfoGet) // Get repository information
-		repoinfoGroup.POST("/", RepoinfoPost) // Post repository information
-		repoinfoGroup.GET("/count", RepoinfoCountGet) // Get count of all repositories
+		repoinfoGroup.GET("/", getRepositoryIndex) // Get repository information
 	}
 
 	// Log that the server is starting

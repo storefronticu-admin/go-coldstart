@@ -6,7 +6,7 @@ import (
 
 // Count path
 
-func RepoinfoCountGet(c *gin.Context) {
+func countRepositories(c *gin.Context) {
 		// collection := firestoreClient.Collection("users")
 		// aggregationQuery := collection.NewAggregationQuery().WithCount("all")
 		// results, err := aggregationQuery.Get(ctx)
